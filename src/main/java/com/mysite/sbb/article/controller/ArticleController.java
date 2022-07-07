@@ -27,4 +27,10 @@ public class ArticleController {
         return articleRepository.findAll();
     }
 
+    @RequestMapping("/detail")
+    @ResponseBody
+    public Article showArticleDetaik() {
+        return articleRepository.findById(1L).get();
+    }
+
 }
