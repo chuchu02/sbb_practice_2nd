@@ -2,6 +2,8 @@ package com.mysite.sbb.article.controller;
 
 import com.mysite.sbb.article.dao.ArticleRepository;
 import com.mysite.sbb.article.domain.Article;
+import com.mysite.sbb.user.dao.UserRepository;
+import com.mysite.sbb.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +18,8 @@ import java.util.Optional;
 public class ArticleController {
     @Autowired
     private ArticleRepository articleRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @RequestMapping("list")
     @ResponseBody
@@ -61,7 +65,7 @@ public class ArticleController {
         return "%d번 게시물이 삭제되었습니다.".formatted(id);
     }
 
-    @RequestMapping("doWrite")
+    @RequestMapping("/doWrite")
     @ResponseBody
     public String doWrite(String title, String body) {
         if ( title == null || title.trim().length() == 0 ) {
@@ -81,6 +85,8 @@ public class ArticleController {
         article.setUpdateDate(LocalDateTime.now());
         article.setTitle(title);
         article.setBody(body);
+        User user = userRepository.findById(1L).get();
+        article.setUser(user);
 
         articleRepository.save(article);
 
