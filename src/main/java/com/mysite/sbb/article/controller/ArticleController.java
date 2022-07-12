@@ -26,7 +26,27 @@ public class ArticleController {
 
     @RequestMapping("/list")
     @ResponseBody
-    public List<Article> showList() {
+    public List<Article> showList(String title, String body) {
+        if(title != null && body == null) {
+            if(articleRepository.existsByTitle(title) == false ) {
+                System.out.println("제목과 일치하는 게시물이 없습니다.");
+                return null;
+            }
+            return articleRepository.findByTitle(title);
+        } else if (title == null && body != null) {
+            if(articleRepository.existsByBody(body) == false ) {
+                System.out.println("내용과 일치하는 게시물이 없습니다.");
+                return null;
+            }
+            return articleRepository.findByBody(body);
+        } else if (title == null && body == null) {
+            if(articleRepository.existsByTitleAndBody(title, body) == false ) {
+                System.out.println("제목과 내용이 일치하는 게시물이 없습니다.");
+                return null;
+            }
+            return articleRepository.findByTitleAndBody(title, body);
+        }
+
         return articleRepository.findAll();
     }
 
@@ -58,10 +78,18 @@ public class ArticleController {
     @RequestMapping("/doDelete")
     @ResponseBody
     public String doDelete(long id) {
-        if(articleRepository.existsById(id) == false ) {
-            return "%d번 게시물은 이미 삭제되었거나 존재하지 않습니다.".formatted(id);
+        if (articleRepository.existsById(id) == false) {
+            return "%d번 게시물은 이미 삭제되었거나 존재하지 않습니다".formatted(id);
         }
+
         articleRepository.deleteById(id);
         return "%d번 게시물이 삭제되었습니다.".formatted(id);
+    }
+
+    @RequestMapping("/findByTitle")
+    @ResponseBody
+    public List<Article> findByTitle(@RequestParam String title) {
+        List<Article> article = articleRepository.findByTitle(title);
+        return article;
     }
 }
