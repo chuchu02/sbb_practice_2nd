@@ -1,7 +1,7 @@
 # DB 생성
-DROP DATABASE IF EXISTS sbb;
-CREATE DATABASE sbb;
-USE sbb;
+DROP DATABASE IF EXISTS sbb_practice;
+CREATE DATABASE sbb_practice;
+USE sbb_practice;
 
 # 회원 테이블 생성
 CREATE TABLE `user` (
