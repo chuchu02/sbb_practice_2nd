@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/user/user")
@@ -31,9 +32,10 @@ public class UserController {
 
         email = email.trim();
 
-        User user = userRepository.findByEmail(email).get();
+//        User user = userRepository.findByEmail(email).orElse(null); 방법 1
+          Optional<User> user = userRepository.findByEmail(email); // 방법 2
 
-        if( user == null ) {
+        if (user.isEmpty()) {
             return "일치하는 회원이 존재하지 않습니다.";
         }
 
@@ -43,23 +45,23 @@ public class UserController {
 
         password = password.trim();
 
-        if( user.getPassword().equals(password) == false ) {
+        if (user.get().getPassword().equals(password) == false) {
             return "비밀번호가 일치하지 않습니다.";
         }
 
-        return "%s님 환영합니다.".formatted(user.getName());
+        return "%s님 환영합니다.".formatted(user.get().getName());
     }
 
     @RequestMapping("doJoin")
     @ResponseBody
     public String doJoin(String name, String email, String password) {
-        if ( name == null || name.trim().length() == 0 ) {
+        if (name == null || name.trim().length() == 0) {
             return "이름을 입력해주세요.";
         }
 
         name = name.trim();
 
-        if ( email == null || email.trim().length() == 0 ) {
+        if (email == null || email.trim().length() == 0) {
             return "이메일을 입력해주세요.";
         }
 
@@ -67,11 +69,11 @@ public class UserController {
 
         boolean existsByEmail = userRepository.existsByEmail(email);
 
-        if( existsByEmail ) {
+        if (existsByEmail) {
             return "입력하신 이메일(%s)는 이미 사용중입니다.".formatted(email);
         }
 
-        if ( password == null || password.trim().length() == 0 ) {
+        if (password == null || password.trim().length() == 0) {
             return "비밀번호를 입력해주세요.";
         }
 
