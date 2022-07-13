@@ -13,8 +13,7 @@ CREATE TABLE `user` (
     `name` CHAR(50) NOT NULL
 );
 
-
-# 회원 데이터 생성
+# 회원데이터 생성
 INSERT INTO `user`
 SET reg_date = NOW(),
 update_date = NOW(),
@@ -46,7 +45,7 @@ CREATE TABLE `article` (
     `user_id` BIGINT UNSIGNED NOT NULL
 );
 
-# 게시물 데이터 생성
+# 회원데이터 생성
 INSERT INTO `article`
 SET reg_date = NOW(),
 update_date = NOW(),
@@ -68,5 +67,5 @@ title = '제목 3',
 `body` = '내용 3',
 `user_id` = 3;
 
-SELECT * FROM `user`
-SELECT * FROM article;
+# 회원테이블의 email 칼럼을 UNIQUE로 지정
+ALTER TABLE `user` ADD UNIQUE INDEX (email);
