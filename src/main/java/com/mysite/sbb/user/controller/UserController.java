@@ -90,4 +90,16 @@ public class UserController {
 
         return "%d번 회원이 생성되었습니다.".formatted(user.getId());
     }
+
+    @RequestMapping("me")
+    @ResponseBody
+    public User showMe(long userId) {
+        Optional<User> user = userRepository.findById(userId);
+
+        if (user.isEmpty()) {
+            return null;
+        }
+
+        return user.get();
+    }
 }
