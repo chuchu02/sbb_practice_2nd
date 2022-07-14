@@ -27,6 +27,25 @@ public class UserController {
         return userRepository.findAll();
     }
 
+    @RequestMapping("doLogout")
+    @ResponseBody
+    public String doLogout(HttpSession session) {
+        boolean isLogined = false;
+
+
+        if (session.getAttribute("loginedUserId") != null) {
+            isLogined = true;
+        }
+
+        if (isLogined == false) {
+            return "이미 로그아웃 되었습니다.";
+        }
+
+        session.removeAttribute("loginedUserId");
+
+        return  "로그아웃 되었습니다.";
+    }
+
     @RequestMapping("doLogin")
     @ResponseBody
     public String doLogin(String email, String password, HttpServletRequest req, HttpServletResponse resp) {
@@ -37,7 +56,7 @@ public class UserController {
         email = email.trim();
 
 //        User user = userRepository.findByEmail(email).orElse(null); 방법 1
-          Optional<User> user = userRepository.findByEmail(email); // 방법 2
+        Optional<User> user = userRepository.findByEmail(email); // 방법 2
 
         if (user.isEmpty()) {
             return "일치하는 회원이 존재하지 않습니다.";
@@ -104,13 +123,13 @@ public class UserController {
         boolean isLogined = false;
         long loginedUserId = 0;
 
-        if(session.getAttribute("loginedUserId") != null ) {
+        if (session.getAttribute("loginedUserId") != null) {
             isLogined = true;
             loginedUserId = (long) session.getAttribute("loginedUserId");
         }
 
 
-        if ( isLogined == false ) {
+        if (isLogined == false) {
             return null;
         }
 
