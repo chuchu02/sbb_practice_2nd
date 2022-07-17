@@ -22,24 +22,10 @@ public class ArticleController {
     private UserRepository userRepository;
 
     @RequestMapping("list")
-    @ResponseBody
     public String showList() {
-        List<Article> articles = articleRepository.findAll();
-
-        String html = "";
-
-        html += "<ul>";
-
-        for (Article article : articles) {
-            html += "<li>";
-            html += "%d번글 / %s".formatted(article.getId(), article.getTitle());
-            html += "</li>";
-        }
-
-        html += "</ul>";
-
-        return html;
+        return "usr/article/list";
     }
+
 
     @RequestMapping("list2")
     @ResponseBody
@@ -59,11 +45,11 @@ public class ArticleController {
     public Article doModify(long id, String title, String body) {
         Article article = articleRepository.findById(id).get();
 
-        if ( title != null ) {
+        if (title != null) {
             article.setTitle(title);
         }
 
-        if ( body != null ) {
+        if (body != null) {
             article.setBody(body);
         }
 
@@ -77,7 +63,7 @@ public class ArticleController {
     @RequestMapping("doDelete")
     @ResponseBody
     public String doDelete(long id) {
-        if ( articleRepository.existsById(id) == false ) {
+        if (articleRepository.existsById(id) == false) {
             return "%d번 게시물은 이미 삭제되었거나 존재하지 않습니다.".formatted(id);
         }
 
@@ -88,13 +74,13 @@ public class ArticleController {
     @RequestMapping("/doWrite")
     @ResponseBody
     public String doWrite(String title, String body) {
-        if ( title == null || title.trim().length() == 0 ) {
+        if (title == null || title.trim().length() == 0) {
             return "제목을 입력해주세요.";
         }
 
         title = title.trim();
 
-        if ( body == null || body.trim().length() == 0 ) {
+        if (body == null || body.trim().length() == 0) {
             return "내용을 입력해주세요.";
         }
 
