@@ -76,6 +76,15 @@ public class ArticleController {
         return "usr/article/detail";
     }
 
+    @RequestMapping("modify")
+    public String showmodify(long id, Model model) {
+        Optional<Article> oPArticle = articleRepository.findById(id);
+        Article article = oPArticle.get();
+
+        model.addAttribute("article", article);
+        return "usr/article/modify";
+    }
+
     @RequestMapping("/doWrite")
     @ResponseBody
     public String doWrite(String title, String body) {
