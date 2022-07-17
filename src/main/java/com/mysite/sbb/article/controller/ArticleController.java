@@ -30,13 +30,6 @@ public class ArticleController {
         return "usr/article/list";
     }
 
-    @RequestMapping("detail")
-    @ResponseBody
-    public Article showDetail(long id) {
-        Optional<Article> article = articleRepository.findById(id);
-        return article.get();
-    }
-
     @RequestMapping("doModify")
     @ResponseBody
     public Article doModify(long id, String title, String body) {
@@ -72,6 +65,15 @@ public class ArticleController {
     @RequestMapping("write")
     public String showWrite() {
         return "usr/article/write";
+    }
+
+    @RequestMapping("detail")
+    public String showDelate(long id, Model model) {
+        Optional<Article> oPArticle = articleRepository.findById(id);
+        Article article = oPArticle.get();
+
+        model.addAttribute("article", article);
+        return "usr/article/detail";
     }
 
     @RequestMapping("/doWrite")
