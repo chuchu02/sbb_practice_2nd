@@ -33,8 +33,34 @@ public class ArticleController {
 
     @RequestMapping("doModify")
     @ResponseBody
-    public String doModify(long id, String title, String body) {
+    public String doModify(long id, String title, String body, HttpSession session) {
+        boolean isLogined = false;
+        long loginedUserId = 0;
+
+        if (session.getAttribute("loginedUserId") != null) {
+            isLogined = true;
+            loginedUserId = (long) session.getAttribute("loginedUserId");
+        }
+
+        if (isLogined == false) {
+            return """
+                    <script>
+                    alert('로그인 후 이용해주세요.');
+                    history.back();
+                    </script>
+                    """;
+        }
+
         Article article = articleRepository.findById(id).get();
+
+        if (article.getUser().getId() != loginedUserId) {
+            return """
+                    <script>
+                    alert('권한이 없습니다.');
+                    history.back();
+                    </script>
+                    """.formatted(id);
+        }
 
         if (title != null) {
             article.setTitle(title);
