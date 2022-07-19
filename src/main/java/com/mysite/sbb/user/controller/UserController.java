@@ -8,31 +8,22 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/user/user")
+@RequestMapping("/usr/user")
 public class UserController {
     @Autowired
     private UserRepository userRepository;
-
-    @RequestMapping("")
-    @ResponseBody
-    public List<User> users() {
-        return userRepository.findAll();
-    }
 
     @RequestMapping("doLogout")
     @ResponseBody
     public String doLogout(HttpSession session) {
         boolean isLogined = false;
-
 
         if (session.getAttribute("loginedUserId") != null) {
             isLogined = true;
@@ -69,7 +60,12 @@ public class UserController {
     @ResponseBody
     public String doLogin(String email, String password, HttpServletRequest req, HttpServletResponse resp) {
         if (email == null || email.trim().length() == 0) {
-            return "이메일을 입력해주세요.";
+            return """
+                <script>
+                alert('이메일을 입력해주세요.');
+                history.back();
+                </script>
+                """;
         }
 
         email = email.trim();
@@ -78,23 +74,43 @@ public class UserController {
         Optional<User> user = userRepository.findByEmail(email); // 방법 2
 
         if (user.isEmpty()) {
-            return "일치하는 회원이 존재하지 않습니다.";
+            return """
+                <script>
+                alert('일치하는 회원이 존재하지 않습니다.');
+                history.back();
+                </script>
+                """;
         }
 
         if (password == null || password.trim().length() == 0) {
-            return "비밀번호를 입력해주세요.";
+            return """
+                <script>
+                alert('비밀번호를 입력해주세요.');
+                history.back();
+                </script>
+                """;
         }
 
         password = password.trim();
 
         if (user.get().getPassword().equals(password) == false) {
-            return "비밀번호가 일치하지 않습니다.";
+            return """
+                <script>
+                alert('비밀번호가 일치하지 않습니다.');
+                history.back();
+                </script>
+                """;
         }
 
         HttpSession session = req.getSession();
         session.setAttribute("loginedUserId", user.get().getId());
 
-        return "%s님 환영합니다.".formatted(user.get().getName());
+        return """
+                <script>
+                alert('%s님 환영합니다.');
+                history.back();
+                </script>
+                """.formatted(user.get().getName());
     }
 
     @RequestMapping("doJoin")
@@ -146,7 +162,6 @@ public class UserController {
             isLogined = true;
             loginedUserId = (long) session.getAttribute("loginedUserId");
         }
-
 
         if (isLogined == false) {
             return null;
