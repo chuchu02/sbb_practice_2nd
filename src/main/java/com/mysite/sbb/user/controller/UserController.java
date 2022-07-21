@@ -30,12 +30,12 @@ public class UserController {
         }
 
         if (isLogined == false) {
-            return "이미 로그아웃 되었습니다.";
+            return "redirect:/";
         }
 
         session.removeAttribute("loginedUserId");
 
-        return  "로그아웃 되었습니다.";
+        return  "redirect:/";
     }
 
     @RequestMapping("login")
