@@ -5,28 +5,30 @@
     <meta charset="UTF-8">
     <title>게시물 작성</title>
 </head>
-<main layout:fragment="main">
-<h1>게시물 작성</h1>
+<main layout:fragment="main" class="mt-[20px]">
+    <h1 class="container mx-auto font-bold text-[1.3rem] px-[10px]">게시물 작성</h1>
 
-<form action="doWrite" method="post">
-    <div>
-        <div>제목</div>
-        <div>
-            <input type="text" name="title" placeholder="제목을 입력해">
+    <form action="doWrite" method="post" class="container mx-auto px-[10px]">
+        <div class="form_control">
+            <label class="label">
+                <span class="label-text">제목</span>
+            </label>
+            <input required type="text" name="title" placeholder="제목을 입력해주세요."
+                   class="input input-bordered w-full ma-w-xl" maxlength="100">
         </div>
-    </div>
-    <div>
-        <div>내용</div>
-        <div>
-            <textarea name="body" placeholder="내용 입력해"></textarea>
+
+        <div class="form_control">
+            <label class="label">
+                <span class="label-text">내용</span>
+            </label>
+            <textarea required type="text" name="body" placeholder="내용을 입력해주세요."
+                      class="input input-bordered w-full ma-w-xl" maxlength="100"></textarea>
         </div>
-    </div>
-    <div>
-    <div>작성</div>
-        <div>
-            <input type="submit" value="작성">
+
+        <div class="mt-[20px]">
+            <input type="submit" value="작성" class="btn btn-primary btn-sm">
+            <button class="btn btn-sm" onclick="history.back();">취소</button>
         </div>
-    </div>
-</form>
+    </form>
 </main>
 </html>
