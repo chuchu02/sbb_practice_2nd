@@ -21,7 +21,6 @@ public class UserController {
     private UserRepository userRepository;
 
     @RequestMapping("doLogout")
-    @ResponseBody
     public String doLogout(HttpSession session) {
         boolean isLogined = false;
 
@@ -35,7 +34,7 @@ public class UserController {
 
         session.removeAttribute("loginedUserId");
 
-        return  "redirect:/";
+        return "redirect:/";
     }
 
     @RequestMapping("login")
@@ -108,7 +107,7 @@ public class UserController {
         return """
                 <script>
                 alert('%s님 환영합니다.');
-                history.back();
+                location.replace('/');
                 </script>
                 """.formatted(user.get().getName());
     }
